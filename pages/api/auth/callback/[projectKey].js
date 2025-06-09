@@ -47,6 +47,7 @@ export default async function handler(req, res) {
       workspace_name: tokenData.workspace_name || '',
       workspace_icon: tokenData.workspace_icon || '',
       workspace_id: tokenData.workspace_id || '',
+      duplicated_template_id: tokenData.duplicated_template_id || '',
       owner_type: tokenData.owner?.type || '',
       owner_user: tokenData.owner?.user ? JSON.stringify(tokenData.owner.user) : '',
       project_key: projectKey,

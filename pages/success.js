@@ -202,39 +202,10 @@ export default function Success() {
                 </div>
               )}
 
-              <div className="workspace-info">
-                <h2>工作区信息</h2>
-                <div className="info-grid">
-                  <div className="info-item">
-                    <label>工作区名称:</label>
-                    <div className="info-value">
-                      {tokenData.workspace_icon && (
-                        <span className="workspace-icon">
-                          {tokenData.workspace_icon}
-                        </span>
-                      )}
-                      {tokenData.workspace_name || '未知'}
-                    </div>
-                  </div>
-                  <div className="info-item">
-                    <label>工作区ID:</label>
-                    <div className="info-value">
-                      {tokenData.workspace_id || '未知'}
-                    </div>
-                  </div>
-                  <div className="info-item">
-                    <label>Bot ID:</label>
-                    <div className="info-value">
-                      {tokenData.bot_id || '未知'}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
               <div className="token-section">
                 <h2>访问令牌</h2>
                 <div className="token-item">
-                  <label>Access Token:</label>
+                  <label>Notion Secret:</label>
                   <div className="token-value">
                     <code className="token-code">
                       {tokenData.access_token}
@@ -249,11 +220,17 @@ export default function Success() {
                 </div>
                 
                 <div className="token-item">
-                  <label>Token Type:</label>
+                  <label>Notion Page:</label>
                   <div className="token-value">
                     <code className="token-code">
                       {tokenData.token_type || 'bearer'}
                     </code>
+                    <button 
+                      className={`copy-button ${copied === 'token' ? 'copied' : ''}`}
+                      onClick={() => copyToClipboard(tokenData.access_token, 'token')}
+                    >
+                      {copied === 'token' ? '已复制!' : '复制'}
+                    </button>
                   </div>
                 </div>
               </div>

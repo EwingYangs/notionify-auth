@@ -6,7 +6,7 @@
 const projects = {
   // 小红书项目
   rednote: {
-    name: "小红书",
+    name: "小红书同步到Notion",
     description: "小红书同步到Notion",
     clientId: process.env.REDNOTE_CLIENT_ID,
     clientSecret: process.env.REDNOTE_CLIENT_SECRET,
