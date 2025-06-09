@@ -218,12 +218,12 @@ export default function Success() {
                     </button>
                   </div>
                 </div>
-                
+                <div className="spacer"></div>
                 <div className="token-item">
                   <label>Notion Page:</label>
                   <div className="token-value">
                     <code className="token-code">
-                      {tokenData.token_type || 'bearer'}
+                      {tokenData.duplicated_template_id || ''}
                     </code>
                     <button 
                       className={`copy-button ${copied === 'token' ? 'copied' : ''}`}
@@ -510,6 +510,10 @@ export default function Success() {
           .actions {
             flex-direction: column;
           }
+        }
+
+        .spacer {
+          height: 1.5rem;
         }
       `}</style>
     </>
