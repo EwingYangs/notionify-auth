@@ -17,6 +17,7 @@ export default function Success() {
       workspace_name, 
       workspace_icon, 
       workspace_id,
+      duplicated_template_id,
       owner_type,
       owner_user,
       project_key,
@@ -34,6 +35,7 @@ export default function Success() {
         workspace_name,
         workspace_icon,
         workspace_id,
+        duplicated_template_id,
         owner_type,
         owner_user: owner_user ? JSON.parse(owner_user) : null,
         project_key,
@@ -226,10 +228,10 @@ export default function Success() {
                       {tokenData.duplicated_template_id || ''}
                     </code>
                     <button 
-                      className={`copy-button ${copied === 'token' ? 'copied' : ''}`}
-                      onClick={() => copyToClipboard(tokenData.access_token, 'token')}
+                      className={`copy-button ${copied === 'page' ? 'copied' : ''}`}
+                      onClick={() => copyToClipboard(tokenData.duplicated_template_id || '', 'page')}
                     >
-                      {copied === 'token' ? '已复制!' : '复制'}
+                      {copied === 'page' ? '已复制!' : '复制'}
                     </button>
                   </div>
                 </div>
