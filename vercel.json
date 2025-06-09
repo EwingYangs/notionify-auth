@@ -1,0 +1,15 @@
+{
+  "name": "notionify-auth",
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "env": {
+    "REDNOTE_CLIENT_ID": "@rednote_client_id",
+    "REDNOTE_CLIENT_SECRET": "@rednote_client_secret",
+    "REDNOTE_REDIRECT_URL": "@rednote_redirect_url"
+  }
+} 
