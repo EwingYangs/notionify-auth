@@ -55,6 +55,14 @@ export default function Success() {
     }
   }
 
+  // 构建完整的 Notion URL
+  const buildNotionUrl = (pageId) => {
+    if (!pageId) return ''
+    // 移除连字符并构建完整URL
+    const cleanPageId = pageId.replace(/-/g, '')
+    return `@https://www.notion.so/ewingyang/${cleanPageId}?source=copy_link`
+  }
+
   // 重新授权
   const handleReauth = () => {
     router.push('/')
@@ -225,11 +233,11 @@ export default function Success() {
                   <label>Notion Page:</label>
                   <div className="token-value">
                     <code className="token-code">
-                      {tokenData.duplicated_template_id || ''}
+                      {buildNotionUrl(tokenData.duplicated_template_id)}
                     </code>
                     <button 
                       className={`copy-button ${copied === 'page' ? 'copied' : ''}`}
-                      onClick={() => copyToClipboard(tokenData.duplicated_template_id || '', 'page')}
+                      onClick={() => copyToClipboard(buildNotionUrl(tokenData.duplicated_template_id), 'page')}
                     >
                       {copied === 'page' ? '已复制!' : '复制'}
                     </button>
