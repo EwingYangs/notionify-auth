@@ -60,7 +60,7 @@ export default function Success() {
     if (!pageId) return ''
     // 移除连字符并构建完整URL
     const cleanPageId = pageId.replace(/-/g, '')
-    return `@https://www.notion.so/ewingyang/${cleanPageId}?source=copy_link`
+    return `https://www.notion.so/ewingyang/${cleanPageId}?source=copy_link`
   }
 
   // 重新授权
@@ -267,6 +267,26 @@ export default function Success() {
                   </div>
                 </div>
               )}
+            </div>
+
+            <div className="security-notice">
+              <div className="security-header">
+                <div className="security-icon">🔒</div>
+                <h3>数据安全声明</h3>
+              </div>
+              <div className="security-content">
+                <p>
+                  <strong>您的数据安全是我们的首要考虑：</strong>
+                </p>
+                <ul className="security-list">
+                  <li>✅ 所有访问令牌仅在您的浏览器中临时显示</li>
+                  <li>✅ 我们的服务器不会存储任何授权令牌或用户数据</li>
+                  <li>✅ 您可以随时在Notion中撤销授权</li>
+                </ul>
+                <p className="security-note">
+                  <strong>提醒：</strong>请妥善保管您的访问令牌，不要与他人分享。如有疑虑，可随时重新授权获取新的令牌。
+                </p>
+              </div>
             </div>
 
             <div className="actions">
@@ -524,6 +544,62 @@ export default function Success() {
 
         .spacer {
           height: 1.5rem;
+        }
+
+        .security-notice {
+          background: linear-gradient(135deg, #48bb7820, #38a16920);
+          border: 1px solid #48bb7840;
+          border-radius: 12px;
+          padding: 1.5rem;
+          margin-top: 1rem;
+        }
+
+        .security-header {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 1rem;
+        }
+
+        .security-icon {
+          font-size: 1.5rem;
+        }
+
+        .security-header h3 {
+          color: #2d3748;
+          margin: 0;
+          font-size: 1.2rem;
+        }
+
+        .security-content p {
+          color: #2d3748;
+          margin-bottom: 1rem;
+          line-height: 1.6;
+        }
+
+        .security-list {
+          margin: 1rem 0;
+          padding-left: 0;
+          list-style: none;
+        }
+
+        .security-list li {
+          color: #2d3748;
+          margin-bottom: 0.5rem;
+          line-height: 1.5;
+          display: flex;
+          align-items: flex-start;
+          gap: 0.5rem;
+        }
+
+        .security-note {
+          background: #fff3cd;
+          border: 1px solid #ffeaa7;
+          border-radius: 8px;
+          padding: 1rem;
+          color: #856404 !important;
+          margin-top: 1rem !important;
+          font-size: 0.9rem;
         }
       `}</style>
     </>
