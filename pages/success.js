@@ -215,7 +215,7 @@ export default function Success() {
               <div className="token-section">
                 <h2>访问令牌</h2>
                 <div className="token-item">
-                  <label>Notion Secret:</label>
+                  <label>Notion Secret（有必要保存）:</label>
                   <div className="token-value">
                     <code className="token-code">
                       {tokenData.access_token}
