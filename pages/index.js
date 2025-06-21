@@ -176,6 +176,16 @@ export default function Home() {
           </div>
         </main>
 
+        {/* 导航区域 */}
+        <nav className="nav-section">
+          <div className="nav-container">
+            <a href="/generate-auth-code" className="nav-link">
+              <span className="nav-icon">🔑</span>
+              生成授权码
+            </a>
+          </div>
+        </nav>
+
         <footer className="footer">
           <p>Made with ❤️ for Notion users</p>
         </footer>
@@ -434,6 +444,43 @@ export default function Home() {
           text-align: center;
           padding: 2rem;
           color: rgba(255,255,255,0.7);
+        }
+
+        .nav-section {
+          padding: 1rem 2rem;
+          background: rgba(255,255,255,0.1);
+          backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+          max-width: 800px;
+          margin: 0 auto;
+          display: flex;
+          justify-content: center;
+        }
+
+        .nav-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1.5rem;
+          background: rgba(255,255,255,0.2);
+          color: white;
+          text-decoration: none;
+          border-radius: 25px;
+          font-weight: 500;
+          transition: all 0.3s ease;
+          border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .nav-link:hover {
+          background: rgba(255,255,255,0.3);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .nav-icon {
+          font-size: 1.2rem;
         }
 
         @media (max-width: 768px) {

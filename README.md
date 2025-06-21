@@ -12,6 +12,7 @@
 - 🎨 美观的项目选择界面
 - 🚀 支持Vercel一键部署
 - 💻 响应式设计，支持移动端
+- 🔑 授权码生成功能，支持密码验证和Supabase存储
 
 ## 项目结构
 
@@ -26,10 +27,14 @@ notionify-auth/
 │   └── projects.js        # 多项目配置管理
 ├── pages/
 │   ├── _app.js           # 应用入口
+│   ├── _error.js         # 错误处理页面
+│   ├── 404.js            # 404页面
 │   ├── index.js          # 首页，项目选择和授权
+│   ├── generate-auth-code.js  # 生成授权码页面
 │   ├── api/
-│   │   └── auth/
-│   │       └── callback.js  # OAuth回调处理
+│   │   ├── auth/
+│   │   │   └── callback.js  # OAuth回调处理
+│   │   └── generate-auth-code.js  # 授权码生成API
 │   └── success.js        # 授权成功页面
 └── styles/
     └── globals.css       # 全局样式
@@ -58,6 +63,10 @@ PROJECT3_CLIENT_SECRET=your_project3_client_secret
 
 # Next.js配置
 NEXTAUTH_URL=http://localhost:3000
+
+# Supabase配置（用于授权码存储）
+SUPABASE_URL=https://cnnscmxjtezszjwiuldf.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNubnNjbXhqdGV6c2p3dml1bGRmIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MDQ2NTAxNiwiZXhwIjoyMDY2MDQxMDE2fQ.rFWz62I3Pflf5LcB4jW2toI--goRTYoH6dobSb9TomU
 ```
 
 **注意**：你可以配置1-3个项目，每个项目都需要完整的三个环境变量。项目配置可以在 `config/projects.js` 中自定义。
@@ -93,6 +102,7 @@ npm run dev
 
 ## 使用方法
 
+### Notion OAuth 授权
 1. 访问首页，如果配置了多个项目，先选择要授权的项目
 2. 点击"授权连接 Notion"按钮
 3. 跳转到Notion授权页面，选择要授权的工作区和页面
@@ -102,6 +112,14 @@ npm run dev
    - 访问Token (access_token、token_type)
    - 授权用户信息
    - 一键复制功能
+
+### 生成授权码
+1. 在首页点击"生成授权码"链接，或直接访问 `/generate-auth-code`
+2. 输入管理员密码（默认：admin123）
+3. 点击"生成授权码"按钮
+4. 系统会在Supabase数据库中创建新记录并返回生成的授权码
+5. 可以点击复制按钮将授权码复制到剪贴板
+6. 支持生成新的授权码或返回首页
 
 ## API接口
 
