@@ -12,6 +12,14 @@ const projects = {
     clientSecret: process.env.REDNOTE_CLIENT_SECRET,
     redirectUrl: process.env.REDNOTE_REDIRECT_URL || `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/auth/callback/rednote`,
     icon: "📍"
+  },
+  weread: {
+    name: "微信读书同步到Notion",
+    description: "微信读书同步到Notion",
+    clientId: process.env.WEREAD_CLIENT_ID,
+    clientSecret: process.env.WEREAD_CLIENT_SECRET,
+    redirectUrl: process.env.WEREAD_REDIRECT_URL || `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/auth/callback/weread`,
+    icon: "📚"
   }
 }
 
