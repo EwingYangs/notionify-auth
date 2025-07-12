@@ -3,11 +3,20 @@ import Head from 'next/head'
 
 export default function GenerateAuthCode() {
   const [password, setPassword] = useState('')
+  const [selectedPlatform, setSelectedPlatform] = useState('xiaohongshu')
+  const [isTrialVersion, setIsTrialVersion] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [authCode, setAuthCode] = useState('')
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+
+  const platforms = [
+    { value: 'xiaohongshu', label: '小红书' },
+    { value: 'weread', label: '微信读书' },
+    { value: 'flomo', label: 'flomo' },
+    { value: 'jike', label: '即刻' }
+  ]
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault()
@@ -22,7 +31,11 @@ export default function GenerateAuthCode() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ 
+          password,
+          platform: selectedPlatform,
+          isTrialVersion
+        }),
       })
 
       const result = await response.json()
@@ -86,6 +99,39 @@ export default function GenerateAuthCode() {
             {!authCode && (
               <div className="password-form">
                 <form onSubmit={handlePasswordSubmit}>
+                  <div className="input-group">
+                    <label htmlFor="platform">选择应用</label>
+                    <select
+                      id="platform"
+                      value={selectedPlatform}
+                      onChange={(e) => setSelectedPlatform(e.target.value)}
+                      className="platform-select"
+                      disabled={isLoading}
+                    >
+                      {platforms.map(platform => (
+                        <option key={platform.value} value={platform.value}>
+                          {platform.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="input-group">
+                    <div className="version-checkbox">
+                      <input
+                        type="checkbox"
+                        id="trial-version"
+                        checked={isTrialVersion}
+                        onChange={(e) => setIsTrialVersion(e.target.checked)}
+                        disabled={isLoading}
+                      />
+                      <label htmlFor="trial-version">
+                        <span className="checkbox-label">体验版（一周有效期）</span>
+                        <span className="version-info">默认：永久版</span>
+                      </label>
+                    </div>
+                  </div>
+
                   <div className="input-group">
                     <label htmlFor="password">管理员密码</label>
                     <div className="password-input">
@@ -242,6 +288,76 @@ export default function GenerateAuthCode() {
           margin-bottom: 0.5rem;
           font-weight: 600;
           color: #333;
+        }
+
+        .platform-select {
+          width: 100%;
+          padding: 12px 16px;
+          border: 2px solid #e1e5e9;
+          border-radius: 8px;
+          font-size: 16px;
+          background-color: white;
+          transition: border-color 0.3s ease;
+          cursor: pointer;
+        }
+
+        .platform-select:focus {
+          outline: none;
+          border-color: #667eea;
+        }
+
+        .platform-select:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+
+        .version-checkbox {
+          display: flex;
+          align-items: flex-start;
+          gap: 12px;
+          padding: 12px;
+          background: #f8f9fa;
+          border: 2px solid #e9ecef;
+          border-radius: 8px;
+          transition: border-color 0.3s ease;
+        }
+
+        .version-checkbox:focus-within {
+          border-color: #667eea;
+        }
+
+        .version-checkbox input[type="checkbox"] {
+          margin: 0;
+          width: 18px;
+          height: 18px;
+          cursor: pointer;
+          accent-color: #667eea;
+        }
+
+        .version-checkbox input[type="checkbox"]:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+
+        .version-checkbox label {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          cursor: pointer;
+          margin: 0;
+          flex: 1;
+        }
+
+        .checkbox-label {
+          font-weight: 600;
+          color: #333;
+          font-size: 16px;
+        }
+
+        .version-info {
+          font-size: 14px;
+          color: #6c757d;
+          font-style: italic;
         }
 
         .password-input {

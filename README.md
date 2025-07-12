@@ -115,11 +115,41 @@ npm run dev
 
 ### 生成授权码
 1. 在首页点击"生成授权码"链接，或直接访问 `/generate-auth-code`
-2. 输入管理员密码（默认：admin123）
-3. 点击"生成授权码"按钮
-4. 系统会在Supabase数据库中创建新记录并返回生成的授权码
-5. 可以点击复制按钮将授权码复制到剪贴板
-6. 支持生成新的授权码或返回首页
+2. 选择目标平台（小红书、微信读书、flomo、即刻）
+3. 选择版本类型：
+   - **永久版**（默认）：无过期时间限制
+   - **体验版**：一周有效期，过期后需要重新生成
+4. 输入管理员密码（默认：2300585123wade）
+5. 点击"生成授权码"按钮
+6. 系统会根据选择的平台和版本：
+   - **小红书**：写入原有的 `auth_code` 表
+   - **其他平台**：写入新的 `app_auth_code` 表，并记录平台信息
+   - **体验版**：设置 `expired_at` 为当前时间一周后
+   - **永久版**：`expired_at` 为 null
+7. 可以点击复制按钮将授权码复制到剪贴板
+8. 支持生成新的授权码或返回首页
+
+### 数据库表结构
+
+#### auth_code 表（小红书专用）
+```sql
+-- 原有的授权码表结构
+```
+
+#### app_auth_code 表（其他平台）
+```sql
+CREATE TABLE public.app_auth_code (
+  id uuid NOT NULL DEFAULT gen_random_uuid(),
+  code uuid NULL DEFAULT gen_random_uuid(),
+  email text NULL,
+  user_id text NULL,
+  user_name text NULL,
+  expired_at timestamp with time zone NULL,
+  created_at timestamp with time zone NOT NULL DEFAULT now(),
+  platform text NULL,
+  CONSTRAINT app_auth_code_pkey PRIMARY KEY (id)
+) TABLESPACE pg_default;
+```
 
 ## API接口
 

@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { password } = req.body
+    const { password, platform = 'xiaohongshu', isTrialVersion = false } = req.body
 
     // 验证密码
     const LOCAL_PASSWORD = '2300585123wade'
@@ -24,14 +24,46 @@ export default async function handler(req, res) {
       return res.status(401).json({ error: '密码错误' })
     }
 
-    console.log('开始插入记录到Supabase...')
+    console.log(`开始插入记录到Supabase，平台: ${platform}，版本: ${isTrialVersion ? '体验版' : '永久版'}...`)
 
-    // 使用Supabase客户端插入记录
-    const { data, error } = await supabase
-      .from('auth_code')
-      .insert([{}])  // 插入空对象，让数据库使用默认值
-      .select('code')
-      .single()
+    // 计算过期时间
+    let expiredAt = null
+    if (isTrialVersion) {
+      // 体验版：一周后过期
+      const oneWeekFromNow = new Date()
+      oneWeekFromNow.setDate(oneWeekFromNow.getDate() + 7)
+      expiredAt = oneWeekFromNow.toISOString()
+    }
+    // 永久版：expired_at 为 null
+
+    let data, error
+
+    if (platform === 'xiaohongshu') {
+      // 小红书：使用原有的auth_code表
+      const result = await supabase
+        .from('auth_code')
+        .insert([{
+          expired_at: expiredAt
+        }])  // 插入过期时间，其他字段使用默认值
+        .select('code')
+        .single()
+      
+      data = result.data
+      error = result.error
+    } else {
+      // 其他平台：使用新的app_auth_code表
+      const result = await supabase
+        .from('app_auth_code')
+        .insert([{
+          platform: platform,
+          expired_at: expiredAt
+        }])  // 插入平台信息和过期时间，其他字段使用默认值
+        .select('code')
+        .single()
+      
+      data = result.data
+      error = result.error
+    }
 
     if (error) {
       console.error('插入记录失败:', error)

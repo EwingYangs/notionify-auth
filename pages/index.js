@@ -177,14 +177,14 @@ export default function Home() {
         </main>
 
         {/* 导航区域 */}
-        <nav className="nav-section">
+        {/* <nav className="nav-section">
           <div className="nav-container">
             <a href="/generate-auth-code" className="nav-link">
               <span className="nav-icon">🔑</span>
               生成授权码
             </a>
           </div>
-        </nav>
+        </nav> */}
 
         <footer className="footer">
           <p>Made with ❤️ for Notion users</p>
