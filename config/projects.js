@@ -20,6 +20,14 @@ const projects = {
     clientSecret: process.env.WEREAD_CLIENT_SECRET,
     redirectUrl: process.env.WEREAD_REDIRECT_URL || `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/auth/callback/weread`,
     icon: "📚"
+  },
+  flomo: {
+    name: "Flomo笔记同步到Notion",
+    description: "Flomo笔记同步到Notion",
+    clientId: process.env.FLOMO_CLIENT_ID,
+    clientSecret: process.env.FLOMO_CLIENT_SECRET,
+    redirectUrl: process.env.FLOMO_REDIRECT_URL || `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/auth/callback/flomo`,
+    icon: "💬"
   }
 }
 
