@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import { validateStripeSession } from '../../lib/stripe-validator'
 
 const supabaseUrl = 'https://cnnscmxjtezsjwviuldf.supabase.co'
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNubnNjbXhqdGV6c2p3dml1bGRmIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MDQ2NTAxNiwiZXhwIjoyMDY2MDQxMDE2fQ.rFWz62I3Pflf5LcB4jW2toI--goRTYoH6dobSb9TomU'
@@ -16,12 +17,42 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { password, platform = 'xiaohongshu', isTrialVersion = false } = req.body
+    const { password, platform = 'xiaohongshu', isTrialVersion = false, sessionId = null } = req.body
 
+    //1. 验证Stripe session是否有效
+    if (sessionId) {
+      const validateResult = await validateStripeSession(sessionId)
+      if (!validateResult.success) {
+        return res.status(401).json({ error: validateResult.error })
+      }
+    }
     // 验证密码
     const LOCAL_PASSWORD = '2300585123wade'
-    if (password !== LOCAL_PASSWORD) {
+    if (!sessionId && password !== LOCAL_PASSWORD) {
       return res.status(401).json({ error: '密码错误' })
+    }
+
+    // 验证sessionid有没有使用过，如果使用过，则返回错误
+    let existResult = null
+    if (platform === 'xiaohongshu') {
+      existResult = await supabase
+        .from('auth_code')
+        .select('id') // 只选择id字段，减少数据传输
+        .eq('stripe_session_id', sessionId)
+        .maybeSingle()
+    } else {
+      existResult = await supabase
+        .from('app_auth_code')
+        .select('id') // 只选择id字段，减少数据传输
+        .eq('stripe_session_id', sessionId)
+        .maybeSingle()
+    }
+
+    console.log('existResult', existResult)
+
+    // 检查是否已存在记录
+    if (existResult.data) {
+      return res.status(401).json({ error: 'Stripe session已使用过' })
     }
 
     console.log(`开始插入记录到Supabase，平台: ${platform}，版本: ${isTrialVersion ? '体验版' : '永久版'}...`)
@@ -43,11 +74,11 @@ export default async function handler(req, res) {
       const result = await supabase
         .from('auth_code')
         .insert([{
-          expired_at: expiredAt
+          expired_at: expiredAt,
+          stripe_session_id: sessionId
         }])  // 插入过期时间，其他字段使用默认值
         .select('code')
         .single()
-      
       data = result.data
       error = result.error
     } else {
@@ -56,7 +87,8 @@ export default async function handler(req, res) {
         .from('app_auth_code')
         .insert([{
           platform: platform,
-          expired_at: expiredAt
+          expired_at: expiredAt,
+          stripe_session_id: sessionId
         }])  // 插入平台信息和过期时间，其他字段使用默认值
         .select('code')
         .single()

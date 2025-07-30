@@ -24,7 +24,8 @@ notionify-auth/
 ├── next.config.js         # Next.js配置
 ├── vercel.json            # Vercel部署配置
 ├── config/
-│   └── projects.js        # 多项目配置管理
+│   ├── projects.js        # 多项目配置管理
+│   └── platforms.js       # 平台配置管理
 ├── pages/
 │   ├── _app.js           # 应用入口
 │   ├── _error.js         # 错误处理页面
@@ -67,9 +68,23 @@ NEXTAUTH_URL=http://localhost:3000
 # Supabase配置（用于授权码存储）
 SUPABASE_URL=https://cnnscmxjtezszjwiuldf.supabase.co
 SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNubnNjbXhqdGV6c2p3dml1bGRmIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MDQ2NTAxNiwiZXhwIjoyMDY2MDQxMDE2fQ.rFWz62I3Pflf5LcB4jW2toI--goRTYoH6dobSb9TomU
+
+# Stripe配置（用于支付验证）
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key
+
+# 管理员密码（用于生成授权码功能）
+ADMIN_PASSWORD=2300585123wade
 ```
 
 **注意**：你可以配置1-3个项目，每个项目都需要完整的三个环境变量。项目配置可以在 `config/projects.js` 中自定义。
+
+### 平台配置
+
+支持的平台配置在 `config/platforms.js` 中统一管理：
+- 小红书：`xiaohongshu`
+- 微信读书：`weread`
+- flomo：`flomo`
+- 即刻：`jike`
 
 ### 获取Notion OAuth配置
 
@@ -129,6 +144,22 @@ npm run dev
 7. 可以点击复制按钮将授权码复制到剪贴板
 8. 支持生成新的授权码或返回首页
 
+### 支付成功页面
+1. 访问 `/pay/success` 页面，处理Stripe支付成功后的跳转
+2. URL参数说明：
+   - `session_id`: Stripe支付session ID
+   - `app`: 应用平台（如：xiaohongshu）
+   - `time`: 版本类型（week=体验版，permanent=永久版）
+3. 页面功能：
+   - 自动验证Stripe session的合法性
+   - 验证成功后自动生成授权码
+   - 显示支付成功信息和授权码
+   - 支持复制授权码到剪贴板
+   - 提供重新生成和返回首页功能
+
+### 测试页面
+访问 `/test-pay-success` 页面可以测试支付成功功能，可以自定义URL参数进行测试。
+
 ### 数据库表结构
 
 #### auth_code 表（小红书专用）
@@ -170,6 +201,47 @@ CREATE TABLE public.app_auth_code (
 
 **返回：**
 重定向到成功页面，并在URL参数中包含token信息。
+
+### POST /api/validate-stripe-session
+
+验证Stripe支付session的合法性。
+
+**请求参数：**
+- `session_id`: Stripe支付session ID
+
+**返回：**
+```json
+{
+  "success": true,
+  "session": {
+    "id": "cs_xxx",
+    "payment_status": "paid",
+    "status": "complete",
+    "amount_total": 1000,
+    "currency": "usd",
+    "customer_email": "user@example.com",
+    "created": 1234567890
+  }
+}
+```
+
+### POST /api/generate-auth-code
+
+生成授权码接口。
+
+**请求参数：**
+- `password`: 管理员密码
+- `platform`: 平台标识（如：xiaohongshu）
+- `isTrialVersion`: 是否为体验版（boolean）
+
+**返回：**
+```json
+{
+  "success": true,
+  "code": "uuid-string",
+  "message": "授权码生成成功"
+}
+```
 
 ## 技术栈
 

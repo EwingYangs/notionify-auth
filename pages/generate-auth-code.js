@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Head from 'next/head'
+import { platforms } from '../config/platforms'
 
 export default function GenerateAuthCode() {
   const [password, setPassword] = useState('')
@@ -10,13 +11,6 @@ export default function GenerateAuthCode() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-
-  const platforms = [
-    { value: 'xiaohongshu', label: '小红书' },
-    { value: 'weread', label: '微信读书' },
-    { value: 'flomo', label: 'flomo' },
-    { value: 'jike', label: '即刻' }
-  ]
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault()
