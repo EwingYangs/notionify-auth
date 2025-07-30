@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
-import { getPlatformLabel } from '../../config/platforms'
+import { getPlatformLabel, getPlatformTutorialLink } from '../../config/platforms'
 
 export default function PaySuccess() {
   const router = useRouter()
@@ -259,6 +259,29 @@ export default function PaySuccess() {
                       </button>
                     </div>
                   </div>
+                  
+                  {/* 添加平台教程链接 */}
+                  {getPlatformTutorialLink(router.query.app) && (
+                    <div className="tutorial-section">
+                      <div className="tutorial-header">
+                        <div className="tutorial-icon">📚</div>
+                        <h3>使用教程</h3>
+                      </div>
+                      <div className="tutorial-content">
+                        <p>
+                          获取到授权码后，请按照以下教程进行同步：
+                        </p>
+                        <a 
+                          href={getPlatformTutorialLink(router.query.app)} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="tutorial-link"
+                        >
+                          📖 查看 {getPlatformLabel(router.query.app)} 使用教程
+                        </a>
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -514,6 +537,62 @@ export default function PaySuccess() {
           display: flex;
           align-items: flex-start;
           gap: 0.5rem;
+        }
+
+        /* 教程部分样式 */
+        .tutorial-section {
+          background: linear-gradient(135deg, #4299e120, #3182ce20);
+          border: 1px solid #4299e140;
+          border-radius: 12px;
+          padding: 1.5rem;
+          margin-top: 1rem;
+        }
+
+        .tutorial-header {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 1rem;
+        }
+
+        .tutorial-icon {
+          font-size: 1.5rem;
+        }
+
+        .tutorial-header h3 {
+          color: #2d3748;
+          margin: 0;
+          font-size: 1.2rem;
+        }
+
+        .tutorial-content p {
+          color: #2d3748;
+          margin-bottom: 1rem;
+          line-height: 1.6;
+        }
+
+        .tutorial-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem 1.5rem;
+          background: #4299e1;
+          color: white;
+          text-decoration: none;
+          border-radius: 8px;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          box-shadow: 0 2px 4px rgba(66, 153, 225, 0.3);
+        }
+
+        .tutorial-link:hover {
+          background: #3182ce;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(66, 153, 225, 0.4);
+        }
+
+        .tutorial-link:active {
+          transform: translateY(0);
         }
       `}</style>
     </>
