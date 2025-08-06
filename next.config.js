@@ -11,6 +11,9 @@ const nextConfig = {
     FLOMO_CLIENT_ID: process.env.FLOMO_CLIENT_ID,
     FLOMO_CLIENT_SECRET: process.env.FLOMO_CLIENT_SECRET,
     FLOMO_REDIRECT_URL: process.env.FLOMO_REDIRECT_URL,
+    JIKE_CLIENT_ID: process.env.JIKE_CLIENT_ID,
+    JIKE_CLIENT_SECRET: process.env.JIKE_CLIENT_SECRET,
+    JIKE_REDIRECT_URL: process.env.JIKE_REDIRECT_URL,
   }
 }
 
