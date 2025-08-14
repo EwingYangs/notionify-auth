@@ -36,6 +36,14 @@ const projects = {
     clientSecret: process.env.JIKE_CLIENT_SECRET,
     redirectUrl: process.env.JIKE_REDIRECT_URL || `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/auth/callback/jike`,
     icon: "💬"
+  },
+  bili: {
+    name: "B站同步到Notion",
+    description: "B站同步到Notion",
+    clientId: process.env.BILI_CLIENT_ID,
+    clientSecret: process.env.BILI_CLIENT_SECRET,
+    redirectUrl: process.env.BILI_REDIRECT_URL || `${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/api/auth/callback/bili`,
+    icon: "💬"
   }
 }
 

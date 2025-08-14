@@ -14,6 +14,9 @@ const nextConfig = {
     JIKE_CLIENT_ID: process.env.JIKE_CLIENT_ID,
     JIKE_CLIENT_SECRET: process.env.JIKE_CLIENT_SECRET,
     JIKE_REDIRECT_URL: process.env.JIKE_REDIRECT_URL,
+    BILI_CLIENT_ID: process.env.BILI_CLIENT_ID,
+    BILI_CLIENT_SECRET: process.env.BILI_CLIENT_SECRET,
+    BILI_REDIRECT_URL: process.env.BILI_REDIRECT_URL,
   }
 }
 
